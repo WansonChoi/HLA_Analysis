@@ -26,10 +26,10 @@ GLOBAL_p_JAVA = which("java")
 
 ### (Logistic Regression)
 def Logistic_Regression(_bfile, _out,
-                        _covar, _covar_names,
-                        _phe, _phe_name,
-                        _condition, _condition_list,
-                        _ref_allele,  # (2018. 8. 6.) Generate default reference_allele file and make it use that file by default.
+                        _phe=None, _phe_name=None,
+                        _covar=None, _covar_names=None,
+                        _condition=None, _condition_list=None,
+                        _ref_allele=None,  # (2018. 8. 6.) Generate default reference_allele file and make it use that file by default.
                         _from_mb = 29, _to_mb = 34, _hide_covar = True, _ci = 0.95,
                         _chr = 6, _allow_no_sex = True):
 
@@ -56,7 +56,8 @@ def Logistic_Regression(_bfile, _out,
         command.append("--condition-list " + _condition_list)
 
     if bool(_ref_allele):
-        command.append("--reference-allele " + _ref_allele)
+        # command.append("--reference-allele " + _ref_allele)
+        command.append("--a1-allele " + _ref_allele)
 
     if not (bool(_from_mb) != bool(_to_mb)): # Exclusive-NOR
         command.append("--from-mb {0} --to-mb {1}".format(_from_mb, _to_mb))
@@ -74,7 +75,7 @@ def Logistic_Regression(_bfile, _out,
     command = ' '.join(command)
 
 
-    ### Conducting Logistic Regression by Plink(v1.07).
+    ### Conducting Logistic Regression by Plink(v1.9b).
 
     print(command)
     os.system(command)
@@ -214,3 +215,9 @@ if __name__ == "__main__":
     parser._optionals.title = "OPTIONS"
 
     parser.add_argument("-h", "--help", help="\nShow this help message and exit\n\n", action='help')
+
+
+    ### Test
+
+    # Logistic_Regression('data/example/LogisticRegression/20190327_WTCCC.AA.CODED', 'tests/20190503_LogisticR',
+    #                     _phe='/Users/wansun/Git_Projects/HLA_Analysis/data/example/LogisticRegression/wtccc_filtered_58C_NBS_RA_T1D.phe', _phe_name='RA')
