@@ -109,12 +109,13 @@ if (file.exists(covfile)) {
     for (i in 1:dim(covar)[2]) {
       covarexp = paste0(covarexp, " + covar.f[,", i, "]")
     }
-    
+
+    print(dim(covar))
+
 } else {
     # 없는 경우는 그냥 NA집어 넣어 놓음.
     covar=NA
 }
-print(dim(covar))
 
 # (3) pheno
 pheno <- as.numeric(as.matrix(read.table(phenfile, header=T))[, data.phe.name])-1
@@ -194,7 +195,10 @@ for (i in 1:length(testvariants)) {
         hap.cond.f=NULL
     }
     newaa.f=newaa[is.live]
-    covar.f=covar[is.live,]
+
+    if(!is.na(covar)){
+      covar.f=covar[is.live,]
+    }
 
     ## DEFINE NEW HAPLOTYPES
   	residues <- unique(newaa.f)
@@ -230,7 +234,7 @@ for (i in 1:length(testvariants)) {
 
 
         ### (2018.4.19) 개인미팅 정리
-        # 결국 deviance라는 통계 변량으로 LL test를 하고싶은거. deviance를 차를 구함으로써 LL test를 수행하는 방법이 있음. 저 qchisq라는 것 또한 결국 LL test를 하는 문맥.
+        # 결국 deviance라는 통계 변량으로 Likelihood Raio test를 하고싶은거. deviance를 차를 구함으로써 LR test를 수행하는 방법이 있음. 저 qchisq라는 것 또한 결국 LR test를 하는 문맥.
         # log(10)으로 나눠주는건 가끔씩 너무 significant한 p-value가 나오면 너무 작은 값이라 처리를 못함. 이거를 log(10)으로 나눠서 캐치해내는거.
 
     	results[i,] <- c(variant, deviancediff, dfdiff, n.is.live, log10pvalue, paste0(residues,collapse=','))
