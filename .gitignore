@@ -16,3 +16,6 @@ tests/
 *.pversion
 *.ipynb
 *.sh
+
+# Dedicated to OminbusTest
+data/example/OmnibusTest/Merged
